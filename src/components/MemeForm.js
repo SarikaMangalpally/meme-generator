@@ -9,7 +9,7 @@ export default function MemeForm() {
         {
             topText: '',
             bottomText: '',
-            randomImage: "https://i.imgflip.com/3xctnx.jpg"
+            randomImage: ""
         }
     );
     
@@ -26,24 +26,30 @@ export default function MemeForm() {
 
     }
 
+    function handleChange(event) {
+        const {name, value} = event.target;
+        setMemeData( prevMeme => ({...prevMeme, [name]: value}))
+    }
 
 
     return (
-        <>
+
             <form className="meme-form">
                 <label htmlFor='top-text' className="top-text-label">
                     <span>Top Text</span>
-                    <input type="text" id="top-text" />
+                    <input type="text" id="top-text" name="topText" onChange={handleChange}/>
                 </label>
                 <label htmlFor='bottom-text' className="bottom-text-label">
                     <span>Bottom Text</span>
-                    <input type="text" id="bottom-text"/>
+                    <input type="text" id="bottom-text" name="bottomText" onChange={handleChange}/>
                 </label>
                 <button type="submit" value="submit" className="generate-meme-button" onClick={generateNewMeme}>Get a new meme image</button>
-            </form>
-            <div>
+            <div className="meme">
                 <img src={memeData.randomImage} className="generated-meme-image"/>
+                <h2 className="meme-text top">{memeData.topText}</h2>
+                <h2 className="meme-text bottom">{memeData.bottomText}</h2>
             </div>
-        </>
+            </form>
+
     )
 }

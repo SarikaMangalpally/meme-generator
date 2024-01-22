@@ -3,10 +3,10 @@ import Header from './components/Header';
 import MemeForm from './components/MemeForm'
 function App() {
   return (
-    <>
-    <Header/>
-    <MemeForm/>
-    </>
+    <main>
+      <Header/>
+      <MemeForm/>
+    </main>
   );
 }
 
