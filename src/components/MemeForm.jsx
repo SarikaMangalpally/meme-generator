@@ -1,26 +1,41 @@
 import React from "react";
 import { ReactDOM } from "react-dom";
-import MemesData from "../memes"
+// import MemesData from "../memes"
+import MemesData from "../get_memes"
 
 export default function MemeForm() {
     // let url = "https://i.imgflip.com/3xctnx.jpg";
     // const [generatedImageUrl, setgeneratedImageUrl] = React.useState(url);
-    const [memeData, setMemeData] = React.useState(
+    const [meme, setMeme] = React.useState(
         {
             topText: '',
             bottomText: '',
-            randomImage: ""
+            randomImage: "https:\/\/i.imgflip.com\/3lmzyx.jpg"
         }
     );
+    const [allmemes, setAllmemes] = React.useState([])
     
+    React.useEffect( () => {
+        fetch("https://api.imgflip.com/get_memes")
+        .then(response => response.json())
+        .then(data=>setAllmemes(data.data.memes))
+
+        // const response = await fetch("https://api.imgflip.com/get_memes")
+        // const data = await response.json()
+        // setAllmemes(data.data.memes)
+    }, [])
+    
+    console.log(allmemes)
     function generateNewMeme(event) {
         event.preventDefault();
-        const memesArray = MemesData.memes;
-        const randomNumber = Math.floor(Math.random() * memesArray.length) //to get a random index of the data array
-        // console.log(randomNumber)
-        const url = memesArray[randomNumber].image_url 
+        // const memesArray = MemesData.memes;
+        console.log(allmemes)
+
+        const randomNumber = Math.floor(Math.random() * allmemes.length) //to get a random index of the data array
+        const url = allmemes[randomNumber].url 
+
         // setgeneratedImageUrl(url)
-        setMemeData(prevData => {
+        setMeme(prevData => {
             return {...prevData, randomImage: url}
         })
 
@@ -28,7 +43,7 @@ export default function MemeForm() {
 
     function handleChange(event) {
         const {name, value} = event.target;
-        setMemeData( prevMeme => ({...prevMeme, [name]: value}))
+        setMeme( prevMeme => ({...prevMeme, [name]: value}))
     }
 
 
@@ -45,11 +60,12 @@ export default function MemeForm() {
                 </label>
                 <button type="submit" value="submit" className="generate-meme-button" onClick={generateNewMeme}>Get a new meme image</button>
             <div className="meme">
-                <img src={memeData.randomImage} className="generated-meme-image"/>
-                <h2 className="meme-text top">{memeData.topText}</h2>
-                <h2 className="meme-text bottom">{memeData.bottomText}</h2>
+                <img src={meme.randomImage} className="generated-meme-image"/>
+                <h2 className="meme-text top">{meme.topText}</h2>
+                <h2 className="meme-text bottom">{meme.bottomText}</h2>
             </div>
             </form>
 
     )
 }
+ 
